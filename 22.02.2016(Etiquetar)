@@ -1,0 +1,48 @@
+###RECODIFICAR Y ETIQUETAR
+require(foreign)
+sociodemo<-read.dbf("C:\\Users\\SALA-C13\\Documents\\SDEMT215.dbf")
+sdemt215<-data.frame(sociodemo)##hacemos la base de datos data.frame
+help(str)
+str(sdemt215)#genera todas las variables que tiene la base de datos
+attach(sdemt215)
+table(SEX)
+table(EDA)
+EDA1<-as.numeric(as.character(EDA))#cambiar a numerico
+table(EDA1)
+install.packages("car") #instalar la paqueteria
+require(car)
+install.packages("memisc")
+require(memisc)
+install.packages("lattice")
+require(lattice)
+install.packages("MASS")
+require(MASS)
+gedad<-recode(EDA1,'1:4=2;5:95=1')##recodificando un rango
+####=(
+
+##PONDERAR CASOS 
+install.packages("questionr")
+require(questionr)
+c0<-table(sdemt215$SEX)
+c0
+c1<-wtd.table(sdemt215$SEX,weights=sdemt215$FAC)
+table(c1)
+write.csv(c1,file = "C:\\Users\\SALA-C13\\Documents\\Series de Tiempo.cvs")##exportar en el formato csv
+c1
+tabrama<-wtd.table(sdemt215$SEX,weights=sdemt215$FAC)
+c1.1<-round((tabrama/margin.table((tabrama))*100,2))##redondear multiplicar por 100 y tomar 2 digitos
+## suma cada una de las casillas con margen.table
+write.csv(c1,file = "C:\\Users\\SALA-C13\\Documents\\Series de Tiempo1.cvs")#
+c1.1
+sdemt215$SEX<-ordered(sdemt215$CLASE2,levels=c(1,2),labels=c("Hombres","Mujeres"))#etiquetar las categorias dependiendo a los niveles
+c2<-wtd.table(sdemt215$SEX,weights=sdemt215$FAC)
+write.csv(c1,file = "C:\\Users\\SALA-C13\\Documents\\Series de Tiempo2.cvs")
+c2
+##ejercicio etiquetar la variable NAc_MES el nombre de cada mes
+sdemt215$NAC_MES1<-as.numeric(as.character(sdemt215$NAC_MES))#cambiar a numerico
+sdemt215$NAC_MES1<-ordered(sdemt215$NAC_MES,levels=c(01,02,03,04,05,06,07,08,09,10,11,12,13),
+                          labels=c("Enero","Febrero","Marzo","Abril","Mayo","Junio",
+                                   "Julio","Agosto","Septiembre","Octubre","Noviembre",
+                                   "Diciembre","No especificado"))
+c3<-wtd.table(sdemt215$NAC_MES1,weights=sdemt215$FAC)
+write.csv(c1,file = "C:\\Users\\SALA-C13\\Documents\\Meses.cvs")
