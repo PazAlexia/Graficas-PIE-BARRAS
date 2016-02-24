@@ -1,0 +1,55 @@
+###EJERCICIO CLASE Yucatan  
+##bajar la base de datos Variables de cuestionario de ocupacion de empleo I del portal del INEGI
+##del segundo trimestre del 2015
+##importar la base de datos .dbf en R
+##seleccionar la entidad de Yucatan
+##P3L etiquetar las preguntas ¿Aproximadamente cuantas personas, incluyendo al dueño, laboran donde trabajan...?
+##P5 
+##hacer 3 las tablas expandidas de las variables que etiquetaron Pregunta 1
+##guardar las tablas en un archivo .cvs
+##IMPORTAR
+library(foreign)
+require(foreign)
+ocup.emp<-read.dbf("C:\\Users\\SALA-C13\\Documents\\COE1T215.dbf")
+#ENTIDAD
+datos<-subset(ocup.emp,(ENT==31)) 
+#PREGUNTA 1
+datos$P3L<-as.numeric(as.character(datos$P3L))
+datos$P3L<-ordered(datos$P3L,levels=c(01,02,03,04,05,06,07,08,09,10,11,99),
+                           labels=c("1 persona","2 a 5 personas","6 a 10 personas","11 a 15 personas",
+                                    "16 a 20 personas","De 21 a 30 personas","De 31 a 50 personas",
+                                    "51 a 100 personas","De 101 a 250 personas","251 a 500 personas","501 o mas" ,"No sabe"))
+pregunta1<-table(datos$P3L)
+View(pregunta1)
+#PREGUNTA 2
+datos$P5<-as.numeric(as.character(datos$P5))
+datos$P5<-ordered(datos$P5,levels=c(1,2,3,9),
+                   labels=c("Sí","No trabajó la semana pasada","No se encontró en esa situación",
+                            "No sabe"))
+pregunta2<-table(datos$P5)
+View(pregunta2)
+##PREGUNTA 3
+datos$P2E<-as.numeric(as.character(datos$P2E))
+datos$P2E<-ordered(datos$P2E,levels=c(1,2,3,4,5,6,9),
+                  labels=c("una persona temporalmente ausente de su actividad u oficio?",
+                           "pensionado o jubilado de su empleo?","estudiante?",
+                           "una persona que se dedica a los quehaceres de su",
+                           "una persona con alguna limitación física o mentalque le impide trabajar por el resto de su vida?",
+                           "Otra condición",
+                           "No sabe"))
+pregunta3<-table(datos$P2E)
+View(pregunta3)
+
+datos$P1<-as.numeric(as.character(datos$P1))
+datos$P1<-ordered(datos$P1,levels=c(1,2),labels=c("Sí","No"))
+
+##tablas expandidas
+install.packages("questionr")
+library(questionr)
+
+a<-wtd.table(datos$P3L,datos$P1,weights=datos$FAC)
+a
+b<-wtd.table(datos$P2E,datos$P1,weights=datos$FAC)
+b
+c<-wtd.table(datos$P5,datos$P1,weights=datos$FAC)
+c
