@@ -1,0 +1,57 @@
+install.packages("foreign")
+require(foreign)
+sociodemo<-read.dbf("C:\\Users\\SALA-C10\\Documents\\SDEMT215.dbf")
+sdemt215<-data.frame(sociodemo)
+##recodificacion de variables numericas (rangos)
+##metodo 1
+attach (sdemt215)
+sdemt215$CLASE2.1[as.numeric(sdemt215$CLASE2)>=0 & as.numeric(sdemt215$CLASE2)<=2]<-1
+sdemt215$CLASE2.1[as.numeric(sdemt215$CLASE2)>=3 & as.numeric(sdemt215$CLASE2)<=4]<-2
+table(sdemt215$CLASE2.1)
+detach(sdemt215)
+#metodo2
+attach(sdemt215)
+sdemt215$CLASE2.2<-ifelse(as.numeric(CLASE2)>=1 & as.numeric(CLASE2)<=2,1,ifelse(as.numeric(CLASE2)>=3 & as.numeric(CLASE2)<=3,2,3))
+detach(sdemt215)
+##4.1.1 comparacion metodos
+require(questionr)
+wtd.table(sdemt215$CLASE2.1)
+wtd.table(sdemt215$CLASE2.2)
+###################EJERCICIO RECODIFICAR VARIABLES##############
+#0 A 14=1 NIÑOS, 15 A 19=2 JOVENES, 30 A 59=3 ADULTOS, 60 A 97=4 ADULTOS, 99 Y 98 =5 NO ESPECIFICADO
+#POR LOS 2 METODOS
+#DESPUES ETIQUETAR LOS GRUPOS
+###COMPARAR METODOS
+##metodo 1
+attach (sdemt215)
+sdemt215$EDA<-as.numeric(as.character(sdemt215$EDA))
+sdemt215$EDA.1[as.numeric(sdemt215$EDA)>=0 & as.numeric(sdemt215$EDA)<=14]<-1
+sdemt215$EDA.1[as.numeric(sdemt215$EDA)>=15 & as.numeric(sdemt215$EDA)<=29]<-2
+sdemt215$EDA.1[as.numeric(sdemt215$EDA)>=30 & as.numeric(sdemt215$EDA)<=59]<-3
+sdemt215$EDA.1[as.numeric(sdemt215$EDA)>=60 & as.numeric(sdemt215$EDA)<=97]<-4
+sdemt215$EDA.1[as.numeric(sdemt215$EDA)>=98 & as.numeric(sdemt215$EDA)<=99]<-5
+table(sdemt215$EDA.1)
+##metodo 2
+attach(sdemt215)
+sdemt215$EDA.2<-ifelse(as.numeric(EDA)>=0 & as.numeric(EDA)<=14,1,
+                         ifelse(as.numeric(EDA)>=15 & as.numeric(EDA)<=29,2,
+                         ifelse(as.numeric(EDA)>=30 & as.numeric(EDA)<=59,3,
+                         ifelse(as.numeric(EDA)>=60 & as.numeric(EDA)<98,4,5))))
+table(sdemt215$EDA.2)
+###etiquetar
+sdemt215$EDA.1<-ordered(sdemt215$EDA.1,levels=c(1,2,3,4,5),
+                   labels=c("NIÑOS 0 A 14",
+                            "JOVENES 15 A 19","ADULTOS 30 A 59",
+                            "ADULTOS MAYORES 60 A 97",
+                            "NO ESPECIFICADO"))
+table(sdemt215$EDA.1)
+sdemt215$EDA.2<-ordered(sdemt215$EDA.2,levels=c(1,2,3,4,5),
+                        labels=c("NIÑOS 0 A 14",
+                                 "JOVENES 15 A 19","ADULTOS 30 A 59",
+                                 "ADULTOS MAYORES 60 A 97",
+                                 "NO ESPECIFICADO"))
+table(sdemt215$EDA.2)
+##comparacion metodos
+require(questionr)
+wtd.table(sdemt215$EDA.1)
+wtd.table(sdemt215$EDA.2)
