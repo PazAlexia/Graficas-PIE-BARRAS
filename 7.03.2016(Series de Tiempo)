@@ -1,0 +1,37 @@
+help(AirPassengers)
+data("AirPassengers")
+serie<-AirPassengers
+class(serie)
+start(serie); end(serie); frequency(serie)
+serie
+##ts() funcion para declarar una base de datos como series de tiempo
+##graficar la serie de tiempo
+plot(serie)
+plot(serie,main="Numero de pasajeros aereos en Estados Unidos,1949-1960",xlab="Pasajeros(Miles)",ylab="Años")
+##agregar una linea de tendencia
+plot(aggregate(serie))
+##poner varias graficas con layout(1:2) para ver 2 graficas
+layout(1:2)
+### como declarar una serie serie<-ts(base1,start = c(1998,1),freq = 4)
+###########################################################
+
+##########EJERCICIO######################################
+#1)Generar un data frame con la tasa de desocupacion que inicia en el primer trimestre del 2005
+#Tasa desocupacion 3.4,4.8,3.3,5.6,3.2,2.9,1.9,2.8,6.0,4.3,2.2,
+#2)Convertirla en serie de tiempo y graficar y la tendencia 
+##punto extra librarla del segundo examen
+#3)obtener un pdf, jpg,png, con las ods graficas en la misma imagen 
+tri<-c("1T","2T","3T","4T")
+año<-c(2005,2006,2007)
+datos<-c(3.4,4.8,3.3,5.6,3.2,2.9,1.9,2.8,6.0,4.3,2.2,NA)
+series<-expand.grid(año=año,trimestre=tri)
+serie1<- cbind(series,count=datos)
+serie1<- tapply(serie1$count,serie1[,1:2], sum)
+serie1
+serie.des<-ts(datos,start = c(2005,1),freq=4)
+serie.des
+jpeg("grafica.jpg")
+layout(1:2)
+plot(serie.des,main="Tasa de desocupacion")
+plot(aggregate(serie.des))
+dev.off()
