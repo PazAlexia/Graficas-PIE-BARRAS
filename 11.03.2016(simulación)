@@ -1,0 +1,42 @@
+##SIMULACION DE SERIES DE TIEMPO
+##VAMOS A SIMULAR 1 INDICADOR
+# PARA LA SIMULACION EN PRINCIPIO NECESITAMOS ALGUNA INFORMACION
+#VALOR MAXIMO, MINIMO, EL NUMERO DE DATOS
+
+##EN ESTE EJEMPLO VAMOS A PROPONER LA POBLACION EN MEXICO
+#QUE EL VALOR MINIMO SERA 100, MAXIMO 120, 15 DATOS QUE INICIE EN 2000
+pob<-sample(100:120,15,replace=F) ##generar datos aleatorios
+pob
+#la comvertimos en serie de tiempo
+pobts<-ts(pob,frequency = 1,start = (2000))
+plot(pobts)##darle un formato
+plot(aggregate(pobts),main="Población",xlab="Año",ylab="Habitantes")
+####################################################################
+##BAJAR DEL INEGI LA BASE LA OCUPACION DE LAS PERSONAS
+##importar csv
+ocu<-ts(read.csv(("C:\\Users\\SALA-C10\\Downloads\\IndicadoresENOE_2016-03-11.csv"),header=FALSE),frequency = 4,start = 2005)
+plot(ocu,main="Población ocupada",xlab="Año",ylab="% población ocupada")
+plot(aggregate(ocu),main="Población ocupada",xlab="Año",ylab="% población ocupada")##linea de tendencia
+
+##SIMULAR LA TASA DE DESOCUPACION DE 3% A 8%, QUE INICIE EN EL 2005, QUE GENERE 40 DATOS TRIMESTRALES
+##BAJAR DEL INEGI LA TASA DE DESOCUPACION 
+#IMPORTAR EN R
+##COMPARAR SIMULACION CON INEGI
+
+##DATOS SIMULADOS
+tasa<-sample(3:8,44,replace=TRUE)
+tasa.des<-ts(tasa,frequency = 4,start = (2005))
+tasa.des
+plot(tasa.des,main="Población desocupada",xlab="Año",ylab="% población desocupada")
+plot(aggregate(tasa.des),main="Población desocupada",xlab="Año",ylab="% población desocupada")
+
+##DATOS DEL INEGI
+##importar csv del inegi tasa de desocupacion
+desocu<-ts(read.csv(("C:\\Users\\SALA-C10\\Downloads\\tasadesocupados.csv"),header=FALSE),frequency = 4,start = 2005)
+plot(desocu,main="Población desocupada",xlab="Año",ylab="% población desocupada")
+plot(aggregate(desocu),main="Población desocupada",xlab="Año",ylab="% población desocupada")
+desocu
+
+##COMPARACION
+plot(cbind(tasa.des,desocu),main="TASAS DE DESOCUPACIÓN",xlab="Año",ylab="tasa",col="orange")##graficar dos graficas
+
