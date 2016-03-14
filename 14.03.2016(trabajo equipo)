@@ -1,0 +1,48 @@
+Elisa Bastida 
+Paz Alexia Díaz
+Ma. Fernanda Flores
+Ma. Fernanda González
+##importar la base de datos a R y convertirla en serie 
+indices<-ts(read.csv(("C:\\Users\\SALA-C10\\Downloads\\tasas.csv"),header=TRUE),frequency = 4,start = 2005)
+class(indices)
+desoparcial<-ts(indices[,1],start = 2005,frequency = 4)
+asalariados<-ts(indices[,2],start = 2005,frequency = 4)
+iflab<-ts(indices[,3],start = 2005,frequency = 4)
+seriemultiple<-ts.intersect(desoparcial,asalariados,iflab) ##serie de tiempo multiple con las 3 variables
+plot(seriemultiple,main="Serie de Tiempo Multiple",xlab="Años",ylab="Numero de personas",col="blue")##graficar la serie de tiempo multiple
+seriemultiple
+
+
+##para partir una seri de tiempo se utiliza window
+##separar la serie de tiempo dependiendo del analisis 
+seriemultiple05.09<-window(seriemultiple,start=c(2005,1),end=c(2009,4))
+seriemultiple10.15<-window(seriemultiple,start=c(2010,1),end=c(2015,4))
+
+plot(seriemultiple05.09,main="Serie de Tiempo Multiple",xlab="Años",ylab="Numero de personas",col="blue")
+plot(seriemultiple10.15,main="Serie de Tiempo Multiple",xlab="Años",ylab="Numero de personas",col="red")
+start(seriemultiple);end(seriemultiple) ##para saber en donde empieza y donde termina
+
+#####################################################################################
+##IMPORTAR
+##DECLARAR SERIE DE TIEMPO
+##GRAFICAR LAS VARIABLES SEPARADAS
+##GRAFICAR JUNTAS COMO SERIES DE TIEMPO
+##CREAR SERIE DE TIEMPO MULTIPLE
+ocuemp<-ts(read.csv(("C:\\Users\\SALA-C10\\Downloads\\ocupacion y empleo.csv"),header=TRUE),frequency = 4,start = 2005)
+
+spfc<-ts(ocuemp[,1],start = 2005,frequency = 4)
+salmin<-ts(ocuemp[,2],start = 2005,frequency = 4)
+horas<-ts(ocuemp[,3],start = 2005,frequency = 4)
+prestaciones<-ts(ocuemp[,4],start = 2005,frequency = 4)
+
+plot(spfc,main="Servicios profesionales, financieros y corporativos",xlab="Años",ylab="#personas")
+plot(salmin,main="Más de 5 salarios mínimos",xlab="Años",ylab="#personas")
+plot(horas,main="Menos de 15 horas",xlab="Años",ylab="#personas")
+plot(prestaciones,main="Con prestaciones",xlab="Años",ylab="#personas")
+
+seriemultipleocuemp<-ts.intersect(spfc,salmin,horas,prestaciones)
+plot(seriemultipleocuemp,main="Ocupacion y empleo",xlab="Años",ylab="#personas")
+
+seriemultipleocuemp05.09<-window(seriemultipleocuemp,start=c(2005,1),end=c(2009,4))
+plot(seriemultipleocuemp05.09,main="Ocupacion y empleo",xlab="Años",ylab="#personas")
+
