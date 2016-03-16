@@ -1,0 +1,49 @@
+#### Generar 4 objetos con datos aleatorios y que tengan 60 datos
+### dato 1 de numero de profesionista (mill)rango de 5 a 8
+### dato 2 crec pib rango de 0 a 5
+### dato 3 porcentaje de ocupados rango de 40 a 60
+### dato 4 porcentaje de desocupados rango de 3 a 8
+#### 1) una vez que generen los datos hacer un data frame de los 4 objetos
+#### 2) mostrar en consola los primeros 12 y ultimos 12 datos
+#### 3) convertir los objetos en series de tiempo desde el data frame comezando en 2010 y son datos mensuales
+#### 4) graficar los profesionistas y ocupados en la misma imagen
+#### 5) graficar pib y desocupados en la misma imagen
+#### 6) graficar todas juntas
+### 7) creaR serie de tiempo multiple!!!!8
+#### 8 ) graficar serie de tiempo multiple 
+#### 9 ) dividir serie de tiempo y graficar solo el ultimo año...
+#### 8 ) analizar las graficas ( si hay alguna tendencia o variacion estacional) (investigar)
+
+dato1<-sample(5:8,60,replace=T)
+dato2<-sample(0:5,60,replace=T)
+dato3<-sample(40:60,60,replace=T)
+dato4<-sample(3:8,60,replace=T)
+
+datos<-data.frame(dato1,dato2,dato3,dato4)
+datos
+names(datos)[1]<-paste("# profesionistas")
+names(datos)[2]<-paste("Crecimiento del PIB")
+names(datos)[3]<-paste("% Ocupados")
+names(datos)[4]<-paste("% Desocupados")
+
+datos[c(seq(1:12),seq(49:60)),seq(1:4)]
+
+serie<-ts(datos,start = c(2010,1),freq=12)
+serie
+
+s.dato1<-ts(dato1,start = c(2010,1),freq=12)
+s.dato2<-ts(dato2,start = c(2010,1),freq=12)
+s.dato3<-ts(dato3,start = c(2010,1),freq=12)
+s.dato4<-ts(dato4,start = c(2010,1),freq=12)
+plot(cbind(s.dato1,s.dato3),main="Profesionistas y Ocupados",xlab="Años",col="blue")
+plot(cbind(s.dato2,s.dato4),main="PIB y Desocupados",xlab="Años",col="red")
+plot(serie,main="Datos aleatorios",xlab="Años",col="pink")
+
+seriemultiple<-ts.intersect(s.dato1,s.dato2,s.dato3,s.dato4)
+plot(seriemultiple,main="Serie Multiple",xlab="Años",col="orange")
+
+seriemultiple2014<-window(seriemultiple,start=c(2014,1),end=c(2014,12))
+plot(seriemultiple2014,main="Serie Multiple 2014",xlab="Años",col="green")
+
+####al observar las graficas se puede concluir que solo se cuentas con variaciones irregulares, no hay 
+##tendencia estacional debido a que no se mantienen por un tiempo considerable los mismos valores
