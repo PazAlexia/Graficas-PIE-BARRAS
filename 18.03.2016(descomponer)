@@ -1,0 +1,20 @@
+#simulen la tasa de desocupacion del ejercicio anterior
+#creen una ST con nombre tdesoc para descomponer su ST 
+#Se utiliza la fn de descomposicion()
+#tdesoc.de<-decompose(tdesoc)
+#names(tdesoc.de)
+dato1<-sample(5:8,60,replace=T)
+dato2<-sample(0:5,60,replace=T)
+dato3<-sample(40:60,60,replace=T)
+dato4<-sample(3:8,60,replace=T)
+datos<-data.frame(dato1,dato2,dato3,dato4)
+tdesoc<-ts(datos,start = c(2010,1),freq=12)
+tdesoc.de<-decompose(tdesoc)
+tdesoc.de
+names(tdesoc.de)
+plot(tdesoc.de)
+plot(decompose(tdesoc))
+Trend<-tdesoc.de$trend
+Trend
+Season<-tdesoc.de
+Season
