@@ -1,0 +1,89 @@
+ica<-ts(read.csv(("C:\\Users\\SALA-C18\\Downloads\\ica.csv"),header=T),frequency=252,start=2000)
+View(ica)
+##la descomposicion de la ST nos permite conocer la estacionalidad, la tendencia y la aleatoriedad
+##para descomponer una ST se utiliza la fn decompose() 
+##para descomponer ST
+icaaditivo<-decompose(ica) ##optenemos el modelo aditivo
+icaaditivo
+##para ver graficamente una descomposicion de la ST en R existen 
+## dos formas de graficar
+##1) directo de la ST
+plot(decompose(ica))
+plot(icaaditivo)
+##en estos casos nos debe de dar los mismos resultados
+#ahora como vimos la clase pasada hay 2 modelos que podemos descomponer la ST
+#modelo aditivo xt=mt+st+zt
+#modelo multiplicativo xt=mt*st+zt
+#ahora para descomponer una serie en un modelo aditivo
+#tdesocadi<-decompose(tdesc) por default nos da el modelo aditivo
+#para descomponer una ST en un modelo multiplicativo
+icamultiplicativo<-decompose(ica,type = "mult")
+###graficar los 2 modelos
+plot(icaaditivo)
+plot(icamultiplicativo)
+#ahora bien como mencionamos anteriormente al descomponer una ST tenemos diversos
+#la descomposicon de ST nos genera diversos elementos como la estacionalidad tendencia 
+#y aleatoridad... son elementos que nos interesan .. para esto se ocupa names()
+names(icaaditivo)##con names mandamos a traer los elementos que tienen el objeto
+icaaditivo$type
+names(icamultiplicativo)
+##ahora para asignar un objeto para los elementos que nos interesan se realiza de la sig manera 
+tendad<-icaaditivo$trend##asignamos la tendencia del modelo aditivo
+icaaditivo$trend
+
+tendmult<-icamultiplicativo$trend##asignamos la tendencia del modelo multiplicativo
+estadi<-icaaditivo$seasonal##asignamos la testacionalidad del modelo aditivo
+estamul<-icamultiplicativo$seasonal##asignamos la testacionalidad del modelo multiplicativo
+#ahora para graficar la tendencia, estacionalidad, etc
+ts.plot(cbind(tendad,tendad*estadi),lty=1:2,col=c(54,40))#lty sirve para ver diferentes tipos de linea
+#algunas fn  utilizadas 
+ts()#genera una st de un objeto 
+window()#estrae o divide una st
+ts.plot()#grafica st
+decompose()#descompone una ST en sus principales elementos
+
+
+#######ejercicio GRUMA
+#con las bases de GRUMA
+#descomponer el modelo aditivo y multiplicativo
+#extraer la tendencia, estacionalidad y aleatoriedad
+#exportar la tendencia, estacionalidad y aleatoriedad en 3 columnas en excel
+##graficar   tendencia, tendencia*estacionalidad en R
+
+gruma<-ts(read.csv(("C:\\Users\\SALA-C18\\Documents\\gruma.csv"),header=T),frequency=252,start=2000)
+View(gruma)
+
+##para descomponer ST
+grumaaditivo<-decompose(gruma) ##optenemos el modelo aditivo
+plot(decompose(gruma))
+#para descomponer una ST en un modelo multiplicativo
+grumamultiplicativo<-decompose(gruma,type = "mult")
+plot(grumamultiplicativo)
+
+names(grumaaditivo)##con names mandamos a traer los elementos que tienen el objeto
+grumaaditivo$type
+names(grumamultiplicativo)
+grumamultiplicativo$type
+
+tendadi<-grumaaditivo$trend
+estadi<-grumaaditivo$seasonal
+randadi<-grumaaditivo$ramdom
+
+tendmult<-grumamultiplicativo$trend
+estamult<-grumamultiplicativo$seasonal
+randmult<-grumamultiplicativo$ramdom
+
+ts.plot(cbind(tendadi,tendadi*estadi),main="Tendencia,Tendencia*Estacionalidad Gruma",xlab="Año",lty=1:2,col=c(54,40))
+
+install.packages("XLConnect")
+library(XLConnect)
+ex<-loadWorkbook("adi y mul.xlsx",create = TRUE)
+createSheet(ex, name = "aditivo")
+writeWorksheet(ex, tendadi, sheet = "aditivo", startRow = 1, startCol = 1)
+writeWorksheet(ex, estadi, sheet = "aditivo", startRow = 1, startCol = 2)
+writeWorksheet(ex, randadi, sheet = "aditivo", startRow = 1, startCol = 3)
+createSheet(ex, name = "multiplicativo")
+writeWorksheet(ex, tendmult, sheet = "multiplicativo", startRow = 1, startCol = 1)
+writeWorksheet(ex, estamul, sheet = "multiplicativo", startRow = 1, startCol = 2)
+writeWorksheet(ex, randmult, sheet = "multiplicativo", startRow = 1, startCol = 3)
+saveWorkbook(ex)
