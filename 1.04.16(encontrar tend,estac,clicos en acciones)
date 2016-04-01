@@ -1,0 +1,61 @@
+#normalmente se utiliza el modelo aditivo cuando la magnitud de las fluctuaciones estacionales de la serie 
+#no varia al hacer la tendencia
+#se utiliza el multiplicativo cuando la magnitud de las fluctuaciones estacionales de la serie crece y 
+#decrece proporcionalmente con los crecimientos y decrecimientos de la tendencia, respect
+
+#una vez que logramos descomponer la ST en diversos elementos de estacionalidad y tendencia hay que 
+#desestacionalizar la ST y eliminar la tendencia 
+
+#existe tendencia cuando existe un patron de datos a largo plazo ya sea que aumenta y disminuye los datos 
+#la estacionalidad existe cuando la ST es influenciado por factores estacionales (por ejemplo el trimestre
+#del año el mes o el dia de la semana)
+#existen componentes ciclicos en los datos cuando se detectan incrementos y caidas que no son de tiempo 
+#determinado (duracion por lo general de al menos 2 años)
+
+#de estos 3 elementos normalmente existe confusion para detectarlos entre la estacionalidad y el componente
+#ciclico
+
+#Principales diferencias entre estos 2 componentes
+#1) patron estacional longitud constante, patron ciclico longitud variable
+#2) duracion media del componente ciclico mas largo que la longitud del patron estacional
+#3) magnitud de ciclico mas variable que magnitud del patron estacional
+#4)el momento de picos y caidas es predecible con los datos estacionales pero impredicible a largo plazo 
+#con datos ciclicos 
+
+install.packages("fpp")
+require(fpp)
+plot(window(elec,start=1980),ylab="GWh",xlab="year",main="Australian electricity production")
+#tienen tendencia,estacionalidad pero no hay componente ciclico
+#tendencia tiene un comportamiento creciente 
+#estacionalidad tiene un mismo comportamiento cada cierto periodo de tiempo
+plot(bricksq,ylab="million units",xlab="Year",main="Australian clay brick production")
+#estacionalidad y ciclico no mucha tendencia 
+plot(hsales,main="Sales of new one-family houses, USA",ylab="total sales",xlab="year")
+#no hay tendencia posible el ciclico
+
+#################
+#EJEMPLOS GRAFICAS DETECTAR TENDENCIA,ESTACIONALIDAD Y CICLO
+liverpool<-read.csv("liverpool.csv",header=T)
+chevrolet<-read.csv("chevrolet.csv",header=T)
+amx<-read.csv("amx.csv",header=T)
+liverpool<-ts(liverpool[,5],start=2000,frequency=12)
+chevrolet<-ts(chevrolet[,5],start=2000,frequency=12)
+amx<-ts(amx[,5],start=2000,frequency=12)
+jpeg("liverpool.jpg")
+plot(liverpool,main="Acción Liverpool",xlab="Año",ylab="Precio",col=29)
+#en esta grafica se puede observar que aproximadamente apartir del 2009 tiene un tendencia creciente
+#no tiene estacionalidad ya que su comportamiento es variado 
+#tiene un poco de ciclo ya que en algunos periodos se pueden observar picos
+dev.off()
+jpeg("chevrolet.jpg")
+plot(chevrolet,main="Acción Chevrolet",xlab="Año",ylab="Precio",col=42)
+#no tiene tendencia 
+#no algo de estacionalidad ya que en algunos periodos casi muestra el mismo comportamiento
+#tienen ciclos subidad y bajas muy pronunciados 
+dev.off()
+jpeg("amx.jpg")
+plot(amx,main="Acción AMX",xlab="Año",ylab="Precio",col=12)
+#no tiene tendencia
+#tiene ciclos 
+#no tiene estacionalidad
+dev.off()
