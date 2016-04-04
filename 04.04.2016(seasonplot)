@@ -1,0 +1,88 @@
+install.packages("fpp")
+require(fpp)
+chevrolet<-read.csv("chevrolet.csv",header=T)
+chevrolet<-ts(chevrolet[,5],start=2000,frequency=12)
+#grafica de temporalidad #s es la periodicidad, pch diferentes tipos de linea
+seasonplot(chevrolet,s=12, year.labels = TRUE,main="valor acción Chevrolet", ylab="valor de cierre",
+           col=rainbow(20),year.labels.left = TRUE,left=TRUE,pch=19)
+#grafica de subseries temporales #con monthplot podemos hacer un analisis de la ST dependiendo del periodo 
+monthplot(chevrolet,main="valor acción Chevrolet", ylab="valor de cierre",
+           xlab="Month")
+######CORRELACION Y COVARIANZA
+#covarianza y correlacion: medida de grado relacion lineal entre 2 variables (X y Y)
+#auto covarianza y autocorrelacion: medida relacion lineal entre valores retardados de una serie de tiempo y 
+#se mide la relacion entre: yt y yt-1
+#yt y yt-2
+#yt y yt-3 , etc
+##para desestacionalizar y eliminar la tendencia necesitamos conocer la correlacion de las variables para 
+#realizar mejores pronosticos de nuestra ST
+#en muchos casos las variables estan correlacionadas, entonces si nosotros logramos identificar la 
+#correlacion podemos mejorar los pronosticos si las correlaciones son altas para la ST observada
+#Autocorrelacion 
+# a veces sucede que los valores que toma una variable en el tiempo no son independientes entre si
+#sino que un valor determinado depende de los valores anteriores
+#
+#para obtener la correlacion se necesita obtener primero la covarianza 
+
+##COVARIANZA
+#EJERCICIO EN R   
+#verifiquen que la formula de la covarianza y la correlacion den el mismo resultado que las funciones 
+#cov(x,y) y cor(x,y)
+#la covarianza es una medida de asociacion entre 2 variables 
+#cor(x,y)=cov(x,y)/sd(x)sd(y)
+#cov(x,y)=(suma(xi-x(media))(yi-y((media))))/(n-1)
+
+liverpool<-read.csv("liverpool.csv",header=T)
+chevrolet<-read.csv("chevrolet.csv",header=T)
+liverpool<-ts(liverpool[,5],start=2000,frequency=12)
+chevrolet<-ts(chevrolet[,5],start=2000,frequency=12)
+n<-length(chevrolet)
+cov<-cov(chevrolet,liverpool)
+sum(((chevrolet)-mean(chevrolet))*(liverpool-mean(liverpool)))/(n-1)
+cor<-cor(chevrolet,liverpool)
+cor
+cov/(sd(chevrolet)*sd(liverpool))
+
+##1)analizar los años de las 3 empresas elegidas(seasonplot) y elegir los 3 años que ubiquen con estacionalidad,
+#tendencia o ciclo interpretar estos 3 años
+#2)calcular con la formula y la fn de covarianza y correlacion en la combinacion de las 3 empresas 
+#empresa1=x, empresa2=y, empresa3=z, calcular la correlacion de 
+#cor(x,y), cor(y,z) y cor(x,z) para hacerlas compatibles tiliza window
+
+liverpool<-read.csv("liverpool.csv",header=T)
+chevrolet<-read.csv("chevrolet.csv",header=T)
+cemexx<-read.csv("cemexx.csv",header=T)
+liverpool<-ts(liverpool[,5],start=2000,frequency=12)
+chevrolet<-ts(chevrolet[,5],start=2000,frequency=12)
+cemexx<-ts(cemexx[,5],start=2000,frequency=12)
+
+seasonplot(chevrolet,s=12, year.labels = TRUE,main="valor acción Chevrolet", ylab="valor de cierre",
+           col=1:20,year.labels.left = TRUE,left=TRUE,pch=19)
+#tiene un ciclo muy notable en el año 2004 de mayo a junio 
+#la tendencia mas notable es en el 2005 de enero a junio para los demas años las tendencias no duran mas de 2 meses
+#no se puede apresiar estacionalidad ya que no han cambios paracidos entre cada ciertos meses
+seasonplot(cemexx,s=12, year.labels = TRUE,main="valor acción Cemex", ylab="valor de cierre",
+           col=1:20,year.labels.left = TRUE,left=TRUE,pch=19)
+#muestra ciclos en el año 2005 en febrero y marzo y en el 2006 en marzo y abril son caidas muy marcadas 
+#tiene un poco de estacionalidad ya q las rectas tienen casi las mismas subidas y bajadas en los precios 
+#no hay tendencia debido  a que no se mantienen constantes las subidas o caidas de los precios
+
+seasonplot(liverpool,s=12, year.labels = TRUE,main="valor acción Liverpool", ylab="valor de cierre",
+           col=1:20,year.labels.left = TRUE,left=TRUE,pch=19)
+#El año 2015 es el es mas notable la tendencia de enero a julio 
+#no cuenta con otra caracteristica ya ha tenido muy pocas variaciones son tan drasticas para ser ciclos ni 
+#tan repetitivas par ser estacionales
+
+n<-length(chevrolet)
+cov(chevrolet,liverpool)
+cov(liverpool,cemexx)
+cov(chevrolet,cemexx)
+sum(((chevrolet)-mean(chevrolet))*(liverpool-mean(liverpool)))/(n-1)
+sum(((liverpool)-mean(liverpool))*(cemexx-mean(cemexx)))/(n-1)
+sum(((chevrolet)-mean(chevrolet))*(cemexx-mean(cemexx)))/(n-1)
+cor(chevrolet,liverpool)
+cor(liverpool,cemexx)
+cor(chevrolet,cemexx)
+cov(chevrolet,liverpool)/(sd(chevrolet)*sd(liverpool))
+cov(liverpool,cemexx)/(sd(liverpool)*sd(cemexx))
+cov(chevrolet,cemexx)/(sd(chevrolet)*sd(cemexx))
