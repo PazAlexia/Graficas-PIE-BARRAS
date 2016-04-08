@@ -1,0 +1,46 @@
+###EXAMEN 18 abril
+#2 partes
+#1)generar un script (en la computadora)
+#2)explicar o hacer comentarios un script en algunas lineas (en papel)
+##estructura del examen 
+##1)manejo de bases de datos en R
+##esportar bases,etiquetar, generar una base de datos, 
+##recodificar, seleccionar casos, graficar
+##2)series de tiempo en R
+##declarar una ST, dividir ST, graficar ST, identificar graficas con estacionalidad,
+##tendencia y ciclo 
+##como determinar estacionalidad en una ST con la funcion de autocorrelacion, calculo
+##correlacion y covarianza
+
+#funcion de autocorrelacion
+#la autocorrelacion mide la correlacion entre 2 variables separadas por k periodos
+#propiedades de la autocorrelacion
+#P0=1
+#-1<=P0<=1
+#simetria Pj=Pj-1
+install.packages("fpp")
+require(fpp)
+##grafico correlograma determina la correlacion muestra si hay estacionalidad o no 
+Acf(beer) ##fn para conocer la autocorrelacion de los datos 
+xx<-Acf(beer,main="ACF of quarterly beer production")##rango en donde hay correlaccion
+names(xx)
+xx$acf
+
+
+#La grafica que genera Acf se denomina correlograma y permite identificar 
+#la autocorrelacion en una ST
+
+#si hay estacionalidad, la Acf en el desface temporal sera grande y positivo
+
+##NETFLIX
+netflix<-read.csv("netflix.csv",header=T)
+netflix<-ts(netflix[,5],start=2015,frequency=12)
+plot.ts(netflix)
+Acf(netflix) # no  hay una marcada estacionalidad se dispara un punto pero los demas 
+#datos estan normal si se puede pronosticar 
+
+##SI HAY MUCHOS DATOS QUE SE SALEN DEL RANGO NO SE PUEDE PRONOSTICAR SE TIENEN QUE
+##MODIFICAR LA SERIE
+
+xx<-Acf(netflix,main="ACF Netflix")
+xx$acf
