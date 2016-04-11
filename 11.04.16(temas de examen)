@@ -1,0 +1,42 @@
+##repaso para examen 
+#manejo de base de datos
+
+#generar una base de datos y declararla data.frame
+#¿que es un data.frame en r?
+#para que es la c
+#importar bases de datos 
+#convertir de numerico a caracter o viceversa
+#***uso de subset seleccionador de casos 
+#select que variables quieres en tu nueva base 
+#operadores logicos  &, |
+#$ de la base mandar a llamar una variable  
+#es importante cuando cambian a numerico en una nueva variable porque (es para el subset)
+#uso de attach para declarar la base predeterminada(donde esta la base de datos) y asi ya no usar el $
+#uso de detach desadjuntar la base ya que no se va a trabajar con ella 
+#graficas con todos datos y nombres de los ejes con limites
+#pch grosor de linea para las graficas 
+#***ponderar casos se usa questionr para saber el valor estimado de la poblacion
+#poderar casos y sacar porcentajes 
+#margin.table 
+#exportar con .csv, los que lo hagan en un libro y en diferentes hojas puntos extras
+#etiquetar 
+#recodificar 2 metodos ponerle otro valor a los datos 
+#series de tiempo
+#simular 
+#sample(de donde a donde, cuantos casos se quieren, si se quiere remplazo o no)
+#replace ture o false si haga remplazo o no
+#ts convertir a serie de tiempo
+#plot(ST)
+#series de tiempo multiples
+#como declarla como graficarla 
+#*** uso de[] en las series de tiempo
+#[renglon,columna]
+#seleccionen los caso del 3 al 58 de la base 3 y convertirla a ST base[3:58,1]
+#ts.intersect() declarar una serie multiple
+#describe tres argumentos de la fn ts.intersect
+#separar ST window (serie,inicio,fin)
+#decompose
+#estacionalidad  season()separar los periodos con window, tendencia trend() y ciclo random()
+#autocorrelacion 
+#correlacion covarianza y autocorrelacion
+#correlograma con la paqueteria fpp o forecast 
