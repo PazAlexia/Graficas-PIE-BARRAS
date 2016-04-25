@@ -1,0 +1,63 @@
+#metodos simples para pronosticar
+#h periodo de tiempo que se quiere pronosticar
+############METODO DE LA MEDIA 
+install.packages("foreign")
+require (foreign)
+tasas<-read.csv("C:\\Users\\SALA-C10\\Downloads\\tasas.csv",header = TRUE)
+part<-ts(tasas[,1],start = (2013),frequency = 4)
+desoc<-ts(tasas[,2],start = (2013),frequency = 4)
+pres<-ts(tasas[,3],start = (2013),frequency = 4)
+asal<-ts(tasas[,4],start = (2013),frequency = 4)
+subocu<-ts(tasas[,5],start = (2013),frequency = 4)
+install.packages("fpp")
+library (fpp)
+install.packages("forecast")
+library (forecast)
+plot(part)
+Acf(part)
+###################
+#media
+#meanf(part,h)
+partpro<-meanf(part,4)
+plot(partpro)
+#el modelo de datos a proyectar es este caso h=4
+
+#######################
+#ingenio
+partnai<-naive(part,4)
+plot(partnai)
+rwf(part,3) #alternativo
+
+################
+#ingenio estacional 
+partsnai<-snaive(part,4)
+partsnai
+plot(partsnai)
+
+
+############
+#metodo de la deriva
+partder<-rwf(part,4,drift=T)#drift aplicar el metodo de la deriva
+partder
+plot(partder)
+#rwf(st,h,drift=TRUE)
+
+#ejemplos
+part1<-window(part,start=2014,end=2015)
+part11<-meanf(part,4)
+part12<-naive(part,4)
+part13<-snaive(part,4)
+
+plot(part11,plot.conf=False,main="Proyecion de tasas de participacion")#plot.conf configuracion de la grafica con T te da los intervalos de ocnfianza 
+lines(part12$mean,col=2)
+lines(part13$mean,col=3)
+lines(part1$mean,col=4)
+legend("topleft",lty=1,col=c(1,2,3),legend = c("metodo media","metodo ingenio",
+                                                 "metodo ingenio estacional"))
+
+plot(part,plot.conf=False,main="Proyecion de tasas de participacion")#plot.conf configuracion de la grafica con T te da los intervalos de ocnfianza 
+lines(part11$mean,col=2)
+lines(part12$mean,col=3)
+lines(part13$mean,col=4)
+legend("topleft",lty=1,col=c(1,2,3),legend = c("metodo media","metodo ingenio",
+                                               "metodo ingenio estacional"))
