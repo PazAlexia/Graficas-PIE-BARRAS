@@ -1,0 +1,43 @@
+accurate(partpro)
+accurate(partnai)
+accurate(partsnai)
+accurate(partder)
+
+#dec="." para que acepte los decimales de la tabla
+pib<-read.csv("C:\\Users\\SALA-C10\\Downloads\\pib.csv",header = TRUE)
+pibts<-ts(pib[,2],start=1993,frequency=4)
+plot(pibts)
+Acf(pibts)
+
+#######################
+#meanf(part,h)
+pibpro<-meanf(pibts,4)
+plot(pibpro)
+
+#######################
+#ingenio
+pibnai<-naive(pibts,4)
+plot(pibnai)
+
+######################
+#ingenio estacional 
+pibsnai<-snaive(pibts,4)
+pibsnai
+plot(pibsnai)
+
+#####################
+#metodo de la deriva
+pibder<-rwf(pibts,4,drift=TRUE)
+pibder
+plot(pibder)
+
+###evaluando cada metodo
+evalmed<-accuracy(pibpro)
+evaling<-accuracy(pibnai)
+evalsnai<-accuracy(pibsnai)
+evalder<-accuracy(pibder)
+###entre mas cercanos a cero es mejor pronostico ya que se aproxima 
+#mas a los valores reales en MAE MAPE RMSE y MASE
+#los valores mas pequeños son los de evalder
+
+
