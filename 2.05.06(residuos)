@@ -22,7 +22,7 @@ Acf(res1,main="Acf de residules")
 #si se sale mas de 11 no hay correlacion entre los residules si salen 1 
 #elemento de la grafica
 hist(res1,main="Histograma de los residuales")
-#el ingenio cumple el supesto de la correlacion y el de la normalidad aun q el
+#el ingenio cumple el supuesto de la correlacion y el de la normalidad aun q el
 #de la varianza no mucho 
 
 plot(res2,main="residuales del metodo de la deriva",ylab="residuales",
@@ -55,8 +55,11 @@ Box.test(res1,lag=10,fitdf=0,type="Lj") #box ljun #fitdf parametros que tienen l
 #grados de libertad 
 Box.test(res1,lag=10,fitdf=0)
 Box.test(res1,lag=10,fitdf=0,type="Lj")
-Box.test(res1,lag=10,fitdf=0)
-Box.test(res1,lag=10,fitdf=0,type="Lj")
-Box.test(res1,lag=10,fitdf=0)
-Box.test(res1,lag=10,fitdf=0,type="Lj")
-#si no rechazamosla hipotesis nula hay aleatoriedad e independencia cuando pvalue>.05
+Box.test(res2,lag=10,fitdf=0)
+Box.test(res2,lag=10,fitdf=0,type="Lj")
+Box.test(res3,lag=10,fitdf=0)
+Box.test(res3,lag=10,fitdf=0,type="Lj")
+Box.test(res4,lag=10,fitdf=0)
+Box.test(res4,lag=10,fitdf=0,type="Lj")
+#si no rechazamosla hipotesis nula hay aleatoriedad e independencia cuando pvalue>.05 
+
