@@ -1,0 +1,62 @@
+install.packages("foreign")
+require (foreign)
+pib<-read.csv("C:\\Users\\SALA-C10\\Downloads\\pib.csv",header = TRUE)
+pibts<-ts(pib[,2],start=1960,frequency = 1)
+plot(pibts)
+
+#################################################################################
+install.packages("fpp")
+require(fpp)
+install.packages("forecast")
+require(forecast)
+plot(pibts,main="tasas de crecimiento del pib 1960-2015",ylab="tasa de crecimiento",
+     xlab="Año",col=163)
+res1<-residuals(snaive(pibts))
+res2<-residuals(rwf(pibts,drift=T))
+res1
+res2
+plot(res1,main="residuales del ingenuo estacional",ylab="residuales",
+     xlab="Año",col=163)
+#se puede ver que si puede tener una varianza es constante 
+Acf(res1,main="Acf de residules")
+#si se sale mas de 11 no hay correlacion entre los residules si salen 1 
+#elemento de la grafica
+hist(res1,main="Histograma de los residuales")
+#el ingenio cumple el supesto de la correlacion y el de la normalidad aun q el
+#de la varianza no mucho 
+
+plot(res2,main="residuales del metodo de la deriva",ylab="residuales",
+     xlab="Año",col=163)
+Acf(res2,main="Acf de residules")#para saber si hay correlacion entre los residuos
+hist(res2,main="Histograma de los residuales")#para saber si los residuos de dist. 
+#normal
+
+res3<-residuals(meanf(pibts))
+res4<-residuals(naive(pibts))
+plot(res3,main="residuales de la media ",ylab="residuales",
+     xlab="Año",col=163)
+#no hay varianza constante
+Acf(res3,main="Acf de residules")
+#si cumpole la correlacion
+hist(res3,main="Histograma de los residuales")
+#no se comporta mucho de manera normal 
+plot(res4,main="residuales del metodo ingenio",ylab="residuales",
+     xlab="Año",col=163)
+#no hay varianza constante
+Acf(res4,main="Acf de residules")
+#cumple la correlacion
+hist(res4,nclass = "FD",main="Histograma de los residuales")
+#si se comporta de manera normal
+#nclass=  numero de clase que se usan en el histograma
+Box.test(res1,lag=10,fitdf=0)#box-pierce  lag son los retrasos o los momentos que se 
+#estan pronosticando si no es estacional es usar 10 y 2m para datos estacionales donde 
+#m es el periodo de estacionalidad
+Box.test(res1,lag=10,fitdf=0,type="Lj") #box ljun #fitdf parametros que tienen la st
+#grados de libertad 
+Box.test(res1,lag=10,fitdf=0)
+Box.test(res1,lag=10,fitdf=0,type="Lj")
+Box.test(res1,lag=10,fitdf=0)
+Box.test(res1,lag=10,fitdf=0,type="Lj")
+Box.test(res1,lag=10,fitdf=0)
+Box.test(res1,lag=10,fitdf=0,type="Lj")
+#si no rechazamosla hipotesis nula hay aleatoriedad e independencia cuando pvalue>.05
