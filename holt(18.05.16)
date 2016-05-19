@@ -1,0 +1,117 @@
+require (foreign)
+require(fpp)
+tasas<-read.csv("C:\\Users\\HP\\Documents\\tasas.csv",header = TRUE)
+
+talza<-ts(tasas[,5], start  = 2005, frequency = 4)
+plot(talza,main=" trabajo asalariado",xlab="año",ylab="%")
+
+modHL<-holt(talza,initial="simple",h=4)
+modHE<-holt(talza,initial="simple",exponential = T,h=4)
+modAA<-holt(talza,damped = T)
+modMA<-holt(talza,damped = T,exponential = T)
+modHWA<-hw(talza,seasonal = "additive")
+modHWM<-hw(talza,seasonal = "multiplicative")
+plot(modHL,plot.conf=FALSE,ylab="tasa",xlab="año",main="",fcol="black",type="o")
+#######################GRAFICANDO AJUSTES 
+lines(fitted(modHL),col="blue",type="o")
+lines(fitted(modHE),col="red",type="o")
+lines(fitted(modAA),col="green",type="o")
+lines(fitted(modMA),col="yellow",type="o")
+lines(fitted(modHWA),col="orange",type="o")
+lines(fitted(modHWM),col="grey",type="o")
+#######################GRAFICANDO LA MEDIA DEL PRONOSTICO de cada uno de los modelos
+lines(modHL$mean,col="blue",type="o")
+lines(modHE$mean,col="red",type="o")
+lines(modAA$mean,col="green",type="o")
+lines(modMA$mean,col="yellow",type="o")
+lines(modHWA$mean,col="orange",type="o")
+lines(modHWM$mean,col="grey",type="o")
+
+
+legend("topleft",lty=1, col=c(1,"blue","red","green","yellow","orange","grey"), 
+       c("data", expression("HL"), expression("HE"),
+         expression("HAA"),expression("HMA"),expression("HWA"),
+         expression("HWM")),pch=1)
+
+#meanf
+talzapro<-meanf(talza,4)
+#######################
+#ingenio
+talzanai<-naive(talza,4)
+######################
+#ingenio estacional 
+talzasnai<-snaive(talza,4)
+#####################
+#metodo de la deriva
+talzader<-rwf(talza,4,drift=TRUE)
+###evaluando cada metodo
+#meanf
+evalmed<-accuracy(talzapro)
+evalmed
+#ingenio
+evaling<-accuracy(talzanai)
+evaling
+#ingenio estacional 
+evalsnai<-accuracy(talzasnai)
+evalsnai
+#metodo de la deriva
+evalder<-accuracy(talzader)
+evalder
+
+
+##################################################################################################################
+
+tbaja<-ts(tasas[,7], start  = 2005, frequency = 4)
+plot(tbaja,main=" condiciones críticas de ocupación",xlab="año",ylab="%")
+modHL1<-holt(tbaja,initial="simple",h=4)
+modHE1<-holt(tbaja,initial="simple",exponential = T,h=4)
+modAA1<-holt(tbaja,damped = T)
+modMA1<-holt(tbaja,damped = T,exponential = T)
+modHWA1<-hw(tbaja,seasonal = "additive")
+modHWM1<-hw(tbaja,seasonal = "multiplicative")
+plot(modHL1,plot.conf=FALSE,ylab="tasa",xlab="año",main="",fcol="black",type="o")
+#######################GRAFICANDO AJUSTES 
+lines(fitted(modHL1),col="blue",type="o")
+lines(fitted(modHE1),col="red",type="o")
+lines(fitted(modAA1),col="green",type="o")
+lines(fitted(modMA1),col="yellow",type="o")
+lines(fitted(modHWA1),col="orange",type="o")
+lines(fitted(modHWM1),col="grey",type="o")
+#######################GRAFICANDO LA MEDIA DEL PRONOSTICO de cada uno de los modelos
+lines(modHL1$mean,col="blue",type="o")
+lines(modHE1$mean,col="red",type="o")
+lines(modAA1$mean,col="green",type="o")
+lines(modMA1$mean,col="yellow",type="o")
+lines(modHWA1$mean,col="orange",type="o")
+lines(modHWM1$mean,col="grey",type="o")
+
+
+legend("topleft",lty=1, col=c(1,"blue","red","green","yellow","orange","grey"), 
+       c("data", expression("HL"), expression("HE"),
+         expression("HAA"),expression("HMA"),expression("HWA"),
+         expression("HWM")),pch=1)
+
+#meanf
+tbajapro<-meanf(tbaja,4)
+#######################
+#ingenio
+tbajanai<-naive(tbaja,4)
+######################
+#ingenio estacional 
+tbajasnai<-snaive(tbaja,4)
+#####################
+#metodo de la deriva
+tbajader<-rwf(tbaja,4,drift=TRUE)
+###evaluando cada metodo
+#meanf
+evalmed1<-accuracy(tbajapro)
+evalmed1
+#ingenio
+evaling1<-accuracy(tbajanai)
+evaling1
+#ingenio estacional 
+evalsnai1<-accuracy(tbajasnai)
+evalsnai1
+#metodo de la deriva
+evalder1<-accuracy(tbajader)
+evalder1
