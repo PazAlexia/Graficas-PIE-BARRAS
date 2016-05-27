@@ -1,0 +1,30 @@
+#1elijan una ST 
+apple <- read.csv ("C:\\Users\\SALA-D12\\Documents\\apple.csv")
+apple <- ts(apple[,2], start  = 2015, frequency = 52)
+require (fpp)
+#2 apliquen la fn auto.arima
+mod1 <- auto.arima(apple, seasonal=FALSE)
+#3apliquen fn arima(p,q,d) con los modelos diferentes al que genere la fn auto.arima
+mod2<-Arima(apple,order = c(3,2,0))
+mod3<-Arima(apple,order = c(1,3,2))
+#3.1 genere los pronosticos de los tres  modelos
+pro1<-forecast(mod1, h=4)
+pro2<-forecast(mod2, h=4)
+pro3<-forecast(mod3, h=4)
+fitted (pro1)
+fitted (pro2)
+fitted (pro3)
+#4 genere una grafica con los valores reales y los valores ajustados de los 3 modelos 
+plot(pro1, plot.conf=FALSE, ylab="Cierre",xlab="año", main="", fcol="pink", type="o",ylim=c(1600,2060))
+lines(fitted(pro1), col="pink", type="o")
+lines(fitted(pro2), col="red", type="o")
+lines(fitted(pro3), col="green", type="o")
+legend("topleft",lty=1, col=c(1,"pink","red","green"), 
+       c("real", expression(mod1), expression(mod2),expression(mod3)),pch=1)
+#5genere grafica con los valores reales ajustados de los 3 modelos numero de pronosticos 4
+plot(pro1, plot.conf=FALSE, ylab="Cierre",xlab="año", main="", fcol="pink", type="o",ylim=c(1700,2060))
+lines(pro1$mean, col="pink", type="o")
+lines(pro2$mean, col="red", type="o")
+lines(pro3$mean, col="green", type="o")
+legend("topleft",lty=1, col=c(1,"pink","red","green"), 
+       c("real", expression(mod1), expression(mod2),expression(mod3)),pch=1)
